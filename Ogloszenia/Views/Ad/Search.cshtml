@@ -1,0 +1,49 @@
+﻿@model Ogloszenia.Models.Ad
+@{
+    ViewBag.Title = "Szukaj ogłoszeń";
+    var categoriesSelect = (SelectList)ViewData["categoriesSelect"];
+}
+
+<h2>Szukaj ogłoszeń</h2>
+
+
+@using (Html.BeginForm("Search", "Ad", FormMethod.Post, new { @class = "contact-form search-ad-form" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="col-sm-12">
+        <div class="form-group form-inline">
+            <label for="CategoryID">Kategoria</label>
+            @Html.DropDownListFor(model => model.Category, categoriesSelect, new { @class = "form-control" })
+        </div>
+    
+        <div class="form-group form-inline">
+            <label>Tytuł</label>
+            <select name="TitleContains" class="form-control">
+                <option value="true">Zawiera</option>
+                <option value="false">Nie zawiera</option>
+            </select>
+            <input name="Title" class="form-control" required="required" type="text" placeholder="Fragment tytułu">
+        </div>
+        <div class="form-group form-inline">
+            <label>Zawartość</label>
+            <select name="ContentContains" class="form-control">
+                <option value="true">Zawiera</option>
+                <option value="false">Nie zawiera</option>
+            </select>
+            <input name="Content" class="form-control" required="required" type="text" placeholder="Fragment zawartości">
+        </div>
+        <div class="form-group form-inline">
+            <label>Data opublikowania</label>
+            <select name="DateBefore" class="form-control">
+                <option value="true">Opublikowane przed</option>
+                <option value="false">>Opublikowane po</option>
+            </select>
+            <input name="Date" class="form-control" required="required" type="date">
+        </div>
+        <div class="form-group">
+            <button type="submit" name="submit" class="btn btn-primary btn-lg" required="required">Szukaj</button>
+        </div>
+    </div>
+}
+
+

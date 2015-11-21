@@ -1,0 +1,32 @@
+﻿@model Ogloszenia.Models.Ad
+
+@{
+    ViewBag.Title = "Dodaj kategorię";
+    var categoriesSelect = (SelectList)ViewData["categoriesSelect"];
+}
+
+<h2>Dodaj kategorię</h2>
+
+
+@using (Html.BeginForm("Create", "Category", FormMethod.Post, new { @class = "contact-form" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="col-sm-8 col-sm-offset-2">
+        <div class="form-group form-inline">
+            <label for="Name">Nazwa kategorii</label>
+            <input name="Name" id="Name" class="form-control" required="required" type="text" placeholder="Kategoria">
+        </div>
+
+        <div class="form-group">
+            <label for="Parent">Kategoria</label>
+            @Html.DropDownListFor(model => model.Category, categoriesSelect, new { @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            <button type="submit" name="submit" class="btn btn-primary btn-lg" required="required">Dodaj kategorię</button>
+        </div>
+    </div>
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }
+}
