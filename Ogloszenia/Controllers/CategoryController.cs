@@ -49,10 +49,12 @@ namespace Ogloszenia.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "CategoryID,Name")] Category category)
+        public ActionResult Create([Bind(Include = "CategoryID, Name")] Category category)
         {
             if (ModelState.IsValid)
             {
+                //TODO better binding
+                category.ParentCategory = db.Categories.Find(Int32.Parse(Request.Form["ParentCategory"]));
                 db.Categories.Add(category);
                 db.SaveChanges();
                 return RedirectToAction("Index");

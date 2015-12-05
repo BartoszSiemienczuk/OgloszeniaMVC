@@ -1,4 +1,4 @@
-﻿@model Ogloszenia.Models.Ad
+﻿@model Ogloszenia.Models.Category
 
 @{
     ViewBag.Title = "Dodaj kategorię";
@@ -18,8 +18,8 @@
         </div>
 
         <div class="form-group">
-            <label for="Parent">Kategoria</label>
-            @Html.DropDownListFor(model => model.Category, categoriesSelect, new { @class = "form-control" })
+            <label for="Parent">Kategoria nadrzędna</label>
+            @Html.DropDownListFor(model => model.ParentCategory, categoriesSelect, new { @class = "form-control" })
         </div>
 
         <div class="form-group">

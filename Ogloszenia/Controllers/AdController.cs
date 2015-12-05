@@ -18,7 +18,8 @@ namespace Ogloszenia.Controllers
         // GET: Ad
         public ActionResult Index()
         {
-            return View(db.Ads.ToList());
+            ViewData["categories"] = db.Categories.ToList();
+            return View();
         }
 
         // GET: Ad/Details/5

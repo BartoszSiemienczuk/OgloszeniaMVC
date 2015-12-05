@@ -1,45 +1,31 @@
-﻿@model IEnumerable<Ogloszenia.Models.Ad>
-
+﻿@using Ogloszenia.Models
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Przeglądaj ogłoszenia";
+    var categories = (List<Ogloszenia.Models.Category>)ViewData["categories"];
 }
 
-<h2>Index</h2>
+    <div class="col-xs-12 col-sm-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">Kategorie</div>
+            <div class="panel-body">
+                <ul>
+                    @foreach(Category c in categories)
+                    {
+                        <li>
+                            <a href="#">@c.Name</a>
+                                <ul>
+                                @foreach (Category c1 in c.getChildCategories())
+                                {
+                                    <li>@c1.Name</li>
+                                }
+                                </ul>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Title)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Content)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ExpirationDate)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Title)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Content)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ExpirationDate)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.AdID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.AdID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.AdID })
-        </td>
-    </tr>
-}
-
-</table>
+    <div class="col-xs-12 col-sm-8">
+        Tu bedzie lista ogloszen
+    </div>

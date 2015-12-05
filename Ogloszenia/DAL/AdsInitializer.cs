@@ -11,14 +11,20 @@ namespace Ogloszenia.DAL
 
         protected override void Seed(AdsContext context)
         {
+            Category bazowa = new Category { CategoryID = 0, Name = "Kategoria bazowa" };
             var categories = new List<Category>
             {
-                new Category {CategoryID=1, Name="Kategoria 1" },
-                new Category {CategoryID=2, Name="Kategoria 2" },
-                new Category {CategoryID=3, Name="Kategoria 1.1"},
+                bazowa,
+                new Category {CategoryID=1, Name="Kategoria 1", ParentCategory=bazowa },
+                new Category {CategoryID=2, Name="Kategoria 2", ParentCategory=bazowa  },
+                new Category {CategoryID=3, Name="Kategoria 1.1", ParentCategory=bazowa },
             };
 
-            categories.ForEach(s => context.Categories.Add(s));
+            categories.ForEach((s) => {
+                    context.Categories.Add(s);
+                }
+            );
+
             context.SaveChanges();
 
             var ads = new List<Ad>

@@ -10,7 +10,7 @@ namespace Ogloszenia.DAL
 {
     public class AdsContext : DbContext
     {
-        public AdsContext() : base("DB") {}
+        public AdsContext() : base("Ad") {}
 
         public DbSet<Ad> Ads { get; set; }
         public DbSet<Category> Categories { get; set; }
