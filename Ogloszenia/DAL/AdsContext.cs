@@ -1,4 +1,5 @@
-﻿using Ogloszenia.Models;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
+using Ogloszenia.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -8,7 +9,7 @@ using System.Web;
 
 namespace Ogloszenia.DAL
 {
-    public class AdsContext : DbContext
+    public class AdsContext : IdentityDbContext<ApplicationUser>
     {
         public AdsContext() : base("Ad") {}
 
@@ -17,6 +18,7 @@ namespace Ogloszenia.DAL
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
         }
     }

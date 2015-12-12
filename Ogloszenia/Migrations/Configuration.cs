@@ -1,16 +1,20 @@
-﻿using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Ogloszenia.Models;
-using System;
-using System.Collections.Generic;
-using System.Data.Entity.Migrations;
-using System.Linq;
-using System.Web;
-
-namespace Ogloszenia.DAL
+namespace Ogloszenia.Migrations
 {
-    public class AdsInitializer : System.Data.Entity.DropCreateDatabaseIfModelChanges<AdsContext>
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
+    using Ogloszenia.Models;
+    using Ogloszenia.DAL;
+    using System;
+    using System.Collections.Generic;
+    using System.Data.Entity.Migrations;
+    using System.Linq;
+
+    internal sealed class Configuration : DbMigrationsConfiguration<Ogloszenia.DAL.AdsContext>
     {
+        public Configuration()
+        {
+            AutomaticMigrationsEnabled = false;
+        }
 
         protected override void Seed(AdsContext context)
         {
@@ -106,7 +110,7 @@ namespace Ogloszenia.DAL
         {
             var ads = new List<Ad>
             {
-                new Ad {Title="Ogłoszenie 1", Content="Lorem ipsum", ExpirationDate=new DateTime(2015,11,20,18,00,00) }
+                new Ad {Title="Og�oszenie 1", Content="Lorem ipsum", ExpirationDate=new DateTime(2015,11,20,18,00,00) }
             };
 
             ads.ForEach(a => context.Ads.Add(a));
