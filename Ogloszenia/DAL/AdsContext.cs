@@ -21,5 +21,10 @@ namespace Ogloszenia.DAL
             base.OnModelCreating(modelBuilder);
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
         }
+
+        public static AdsContext Create()
+        {
+            return new AdsContext();
+        }
     }
 }

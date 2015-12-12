@@ -37,6 +37,7 @@ namespace Ogloszenia.Controllers
         }
 
         // GET: Category/Create
+        [Authorize(Roles ="Admin")]
         public ActionResult Create()
         {
             var categories = db.Categories.ToList();
@@ -49,6 +50,7 @@ namespace Ogloszenia.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles ="Admin")]
         public ActionResult Create([Bind(Include = "CategoryID, Name")] Category category)
         {
             if (ModelState.IsValid)
