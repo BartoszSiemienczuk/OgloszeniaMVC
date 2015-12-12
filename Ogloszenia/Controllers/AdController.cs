@@ -8,17 +8,29 @@ using System.Web;
 using System.Web.Mvc;
 using Ogloszenia.DAL;
 using Ogloszenia.Models;
+using Microsoft.AspNet.Identity;
 
 namespace Ogloszenia.Controllers
 {
     public class AdController : Controller
     {
-        private AdsContext db = new AdsContext();
+        private AdsContext db = AdsContext.Create();
+        private int CONTENT_MAXLENGTH = 100;
 
         // GET: Ad
+        [AllowAnonymous]
         public ActionResult Index()
         {
             ViewData["categories"] = db.Categories.ToList();
+            ViewData["ads"] = db.Ads.ToList();
+            return View();
+        }
+
+        [Authorize(Roles ="Admin")]
+        public ActionResult IndexAdmin()
+        {
+            ViewData["categories"] = db.Categories.ToList();
+            ViewData["ads"] = db.Ads.ToList();
             return View();
         }
 
@@ -63,6 +75,15 @@ namespace Ogloszenia.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (ad.Content.Length > CONTENT_MAXLENGTH)
+                {
+                    ad.ContentShort = createShortContent(ad.Content);
+                }
+                else
+                {
+                    ad.ContentShort = ad.Content;
+                }
+                ad.Owner = db.Users.Find(User.Identity.GetUserId());
                 db.Ads.Add(ad);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -95,6 +116,13 @@ namespace Ogloszenia.Controllers
         {
             if (ModelState.IsValid)
             {
+                if(ad.Content.Length > CONTENT_MAXLENGTH)
+                {
+                    ad.ContentShort = createShortContent(ad.Content);
+                } else
+                {
+                    ad.ContentShort = ad.Content;
+                }
                 db.Entry(ad).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -135,6 +163,26 @@ namespace Ogloszenia.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        // GET: Ad/Manage/5
+        public ActionResult Manage(long? id)
+        {
+            return View(db.Ads.Include(a => a.Owner));
+        }
+
+        private String createShortContent(String input)
+        {
+            String result = "";
+            String[] words = input.Split(' ');
+            int index = 0;
+            while(result.Length <= CONTENT_MAXLENGTH)
+            {
+                result += words[index] + " ";
+                index++;
+            }
+            result += " (...)";
+            return result;
         }
     }
 }

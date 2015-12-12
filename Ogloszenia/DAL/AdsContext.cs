@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Identity.EntityFramework;
+using Ogloszenia.Migrations;
 using Ogloszenia.Models;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,8 @@ namespace Ogloszenia.DAL
 {
     public class AdsContext : IdentityDbContext<ApplicationUser>
     {
-        public AdsContext() : base("Ad") {}
+        public AdsContext() : base("Ad") {
+        }
 
         public DbSet<Ad> Ads { get; set; }
         public DbSet<Category> Categories { get; set; }

@@ -1,11 +1,12 @@
 namespace Ogloszenia.Migrations
 {
+    using DAL;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
-    using Ogloszenia.Models;
-    using Ogloszenia.DAL;
+    using Models;
     using System;
     using System.Collections.Generic;
+    using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
 
@@ -13,15 +14,15 @@ namespace Ogloszenia.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
         }
 
         protected override void Seed(AdsContext context)
         {
             SeedAdmin(context);
             SeedUser(context);
-            SeedAds(context);
             SeedCategories(context);
+            SeedAds(context);
         }
 
         private void SeedAdmin(IdentityDbContext<ApplicationUser> context)
@@ -34,7 +35,8 @@ namespace Ogloszenia.Migrations
                 var user = new ApplicationUser
                 {
                     UserName = "admin.bartek@ogloszenia.sln",
-                    Email = "admin.bartek@ogloszenia.sln"
+                    Email = "admin.bartek@ogloszenia.sln",
+                    PhoneNumber = "127 001 007"
                 };
                 userManager.Create(user, "Admin123!");
 
@@ -59,7 +61,8 @@ namespace Ogloszenia.Migrations
                 var user = new ApplicationUser
                 {
                     UserName = "user.adam@ogloszenia.sln",
-                    Email = "user.adam@ogloszenia.sln"
+                    Email = "user.adam@ogloszenia.sln",
+                    PhoneNumber = "192 168 111"
                 };
                 userManager.Create(user, "Passw0rd!");
 
@@ -76,8 +79,10 @@ namespace Ogloszenia.Migrations
 
         private void SeedCategories(AdsContext context)
         {
-            Category bazowa = new Category { CategoryID = 0, Name = "Kategoria bazowa" };
-            var categories = new List<Category>
+            if (!context.Categories.Any())
+            {
+                Category bazowa = new Category { CategoryID = 0, Name = "Kategoria bazowa" };
+                var categories = new List<Category>
             {
                 bazowa,
                 new Category {CategoryID=1, Name="Kategoria 1", ParentCategory=bazowa },
@@ -85,23 +90,35 @@ namespace Ogloszenia.Migrations
                 new Category {CategoryID=3, Name="Kategoria 1.1", ParentCategory=bazowa },
             };
 
-            categories.ForEach((s) => {
-                context.Categories.Add(s);
-            }
-            );
+                categories.ForEach((s) =>
+                {
+                    context.Categories.Add(s);
+                }
+                );
 
-            context.SaveChanges();
+                context.SaveChanges();
+            }
         }
 
         private void SeedAds(AdsContext context)
         {
-            var ads = new List<Ad>
+            if (!context.Ads.Any())
             {
-                new Ad {Title="Og³oszenie 1", Content="Lorem ipsum", ExpirationDate=new DateTime(2015,11,20,18,00,00) }
-            };
+                var ads = new List<Ad>
+            {
+                new Ad {
+                    Title ="Og³oszenie 1",
+                    Content ="Lorem ipsum",
+                    ContentShort ="Lorem ipsum (...)",
+                    ExpirationDate =new DateTime(2015,11,20,18,00,00),
+                    Owner = context.Users.First(u => u.UserName == "user.adam@ogloszenia.sln")
+                    }
+        };
 
-            ads.ForEach(a => context.Ads.Add(a));
-            context.SaveChanges();
+                ads.ForEach(a => context.Ads.Add(a));
+                context.SaveChanges();
+            }
         }
+
     }
 }

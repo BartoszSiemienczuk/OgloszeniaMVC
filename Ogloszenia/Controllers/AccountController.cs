@@ -9,12 +9,16 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Ogloszenia.Models;
+using Ogloszenia.DAL;
+using System.Net;
+using System.Data.Entity;
 
 namespace Ogloszenia.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
+        private AdsContext db = AdsContext.Create();
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -423,6 +427,39 @@ namespace Ogloszenia.Controllers
             base.Dispose(disposing);
         }
 
+        // GET /Account/Manage/
+        public ActionResult Manage()
+        {
+            return View(db.Users.ToList());
+        }
+
+        // GET /Account/Edit/5
+        public ActionResult Edit(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ApplicationUser user = db.Users.Find(id);
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+            return View(user);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "Id,Email,PhoneNumber")] ApplicationUser user)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(user);
+        }
         #region Helpers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";

@@ -106,7 +106,7 @@ namespace Ogloszenia.DAL
         {
             var ads = new List<Ad>
             {
-                new Ad {Title="Ogłoszenie 1", Content="Lorem ipsum", ExpirationDate=new DateTime(2015,11,20,18,00,00) }
+                new Ad {Title="Ogłoszenie 1", Content="Lorem ipsum", ContentShort="Lorem ipsum ...",  ExpirationDate=new DateTime(2015,11,20,18,00,00) }
             };
 
             ads.ForEach(a => context.Ads.Add(a));

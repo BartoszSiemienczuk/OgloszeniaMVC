@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNet.Identity;
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -33,10 +35,11 @@
                             </ul>
                             <div class="search">
                                 <form role="form">
-                                    <input type="text" class="search-form" autocomplete="off" placeholder="Szukaj">
+                                    <input type="text" class="search-form" autocomplete="on" placeholder="Szukaj">
                                     <i class="fa fa-search"></i>
                                 </form>
                             </div>
+                            @Html.Partial("_LoginPartial")
                         </div>
                     </div>
                 </div>
@@ -56,23 +59,43 @@
 
                 <div class="collapse navbar-collapse navbar-right">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="index.html">Główna</a></li>
+                        <li class="active">@Html.ActionLink("Główna", "Index", "Home")</li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Ogłoszenia <i class="fa fa-angle-down"></i></a>
                             <ul class="dropdown-menu">
+                                @if(ViewContext.HttpContext.User.IsInRole("Admin"))
+                                {
+                                <li>@Html.ActionLink("Przeglądaj", "IndexAdmin", "Ad")</li>
+                                } else 
+                                {
                                 <li>@Html.ActionLink("Przeglądaj", "Index", "Ad")</li>
+                                }
+
                                 <li>@Html.ActionLink("Szukaj", "Search", "Ad")</li>
-                                <li>@Html.ActionLink("Dodaj nowe", "Create", "Ad")</li>
+                                @if (ViewContext.HttpContext.User.IsInRole("User"))
+                                {
+                                    <li>@Html.ActionLink("Dodaj nowe", "Create", "Ad")</li>
+                                    <li>@Html.ActionLink("Zarządzaj", "Manage", "Ad", null, HttpContext.Current.User.Identity.GetUserId())</li>
+                                }
                             </ul>
                         </li>
 
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Kategorie <i class="fa fa-angle-down"></i></a>
-                            <ul class="dropdown-menu">
-                                <li>@Html.ActionLink("Przeglądaj", "Index", "Category")</li>
-                                <li>@Html.ActionLink("Dodaj nową", "Create", "Category")</li>
-                            </ul>
-                        </li>
+                        @if (ViewContext.HttpContext.User.IsInRole("Admin"))
+                        {
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Kategorie <i class="fa fa-angle-down"></i></a>
+                                <ul class="dropdown-menu">
+                                    <li>@Html.ActionLink("Przeglądaj", "Index", "Category")</li>
+                                    <li>@Html.ActionLink("Dodaj nową", "Create", "Category")</li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Użytkownicy <i class="fa fa-angle-down"></i></a>
+                                <ul class="dropdown-menu">
+                                    <li>@Html.ActionLink("Przeglądaj", "Manage", "Account")</li>
+                                </ul>
+                            </li>
+                        }
                         <li>@Html.ActionLink("Kontakt", "Contact", "Home")</li>
                     </ul>
                 </div>
@@ -149,7 +172,7 @@
                 </div>
                 <div class="col-sm-6">
                     <ul class="pull-right">
-                        <li>@Html.ActionLink("Ogłoszenia","Index","Ad")</li>
+                        <li>@Html.ActionLink("Ogłoszenia", "Index", "Ad")</li>
                         <li>@Html.ActionLink("Ogłoszenia", "Index", "Category")</li>
                     </ul>
                 </div>
