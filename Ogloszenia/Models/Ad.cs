@@ -7,10 +7,17 @@ namespace Ogloszenia.Models
 
     public class Ad
     {
+        public Ad()
+        {
+            Visits = 0;
+        }
+
         public long AdID { get; set; }
         public String Title { get; set; }
 
         public String Content { get; set; }
+
+        public long Visits { get; set; }
 
         public String ContentShort { get; set; }
 

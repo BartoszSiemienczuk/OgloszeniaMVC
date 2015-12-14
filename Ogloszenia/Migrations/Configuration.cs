@@ -111,7 +111,8 @@ namespace Ogloszenia.Migrations
                     Content ="Lorem ipsum",
                     ContentShort ="Lorem ipsum (...)",
                     ExpirationDate =new DateTime(2015,11,20,18,00,00),
-                    Owner = context.Users.First(u => u.UserName == "user.adam@ogloszenia.sln")
+                    Owner = context.Users.First(u => u.UserName == "user.adam@ogloszenia.sln"),
+                    Visits = 0
                     }
         };
 

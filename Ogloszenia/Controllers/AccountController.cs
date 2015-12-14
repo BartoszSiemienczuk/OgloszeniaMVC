@@ -450,15 +450,56 @@ namespace Ogloszenia.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Email,PhoneNumber")] ApplicationUser user)
+        public ActionResult Edit([Bind(Include = "UserName,Email,PhoneNumber,PasswordHash")] ApplicationUser user)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(user).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                AdsContext.SaveChanges(db);
+                return RedirectToAction("Manage");
             }
             return View(user);
+        }
+
+        //GET //Account/Details/5
+        public ActionResult Details(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ApplicationUser user = db.Users.Find(id);
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+            return View(user);
+        }
+
+        //GET //Account/Delete/5
+        public ActionResult Delete(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ApplicationUser user = db.Users.Find(id);
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+            return View(user);
+        }
+
+        //POST //Account/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(string id)
+        {
+            ApplicationUser account = db.Users.Find(id);
+            db.Users.Remove(account);
+            db.SaveChanges();
+            return RedirectToAction("Manage");
         }
         #region Helpers
         // Used for XSRF protection when adding external logins

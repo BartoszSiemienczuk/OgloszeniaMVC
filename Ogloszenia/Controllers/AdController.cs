@@ -46,6 +46,9 @@ namespace Ogloszenia.Controllers
             {
                 return HttpNotFound();
             }
+            ad.Visits++;
+            db.Entry(ad).State = EntityState.Modified;
+            db.SaveChanges();
             return View(ad);
         }
 
@@ -84,6 +87,11 @@ namespace Ogloszenia.Controllers
                     ad.ContentShort = ad.Content;
                 }
                 ad.Owner = db.Users.Find(User.Identity.GetUserId());
+
+                if (containsAnyBannedWord(ad.Content) || containsAnyBannedWord(ad.Title))
+                {
+                    return RedirectToAction("BannedWordInserted");
+                }
                 db.Ads.Add(ad);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -123,8 +131,12 @@ namespace Ogloszenia.Controllers
                 {
                     ad.ContentShort = ad.Content;
                 }
+                if (containsAnyBannedWord(ad.Content) || containsAnyBannedWord(ad.Title))
+                {
+                    return RedirectToAction("BannedWordInserted");
+                }
                 db.Entry(ad).State = EntityState.Modified;
-                db.SaveChanges();
+                db.SaveChanges();                
                 return RedirectToAction("Index");
             }
             return View(ad);
@@ -183,6 +195,18 @@ namespace Ogloszenia.Controllers
             }
             result += " (...)";
             return result;
+        }
+
+        private Boolean containsAnyBannedWord(String content)
+        {
+            Boolean result = false;
+            db.BannedWords.ToList().ForEach(w => result = content.Contains(w.Text));
+            return result;
+        }
+
+        public ActionResult BannedWordInserted()
+        {
+            return View();
         }
     }
 }
