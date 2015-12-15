@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using Ogloszenia.DAL;
 using Ogloszenia.Models;
 using Microsoft.AspNet.Identity;
+using PagedList;
 
 namespace Ogloszenia.Controllers
 {
@@ -19,10 +20,19 @@ namespace Ogloszenia.Controllers
 
         // GET: Ad
         [AllowAnonymous]
-        public ActionResult Index()
+        public ActionResult Index(string search, int? pageNumber)
         {
             ViewData["categories"] = db.Categories.ToList();
-            ViewData["ads"] = db.Ads.ToList();
+
+            int adsPerPage = db.Users.Find(User.Identity.GetUserId()).adsPerPage;
+
+            var ads = db.Ads.ToList().ToPagedList(pageNumber ?? 1, adsPerPage);
+
+            if (search != "" && search != null)
+            {
+                ads = findAllAds(search).ToPagedList(pageNumber ?? 1, adsPerPage);
+            }
+            ViewData["ads"] = ads;
             return View();
         }
 
@@ -204,6 +214,22 @@ namespace Ogloszenia.Controllers
             return result;
         }
 
+        private List<Ad> findAllAds(string search)
+        {
+            List<Ad> result = new List<Ad>();
+            string[] strings = search.Split(' ');
+
+            foreach(string s in strings)
+            {
+                List<Ad> ads = db.Ads.Where(a => a.Content.Contains(s) || a.Title.Contains(s)).ToList();
+                foreach(Ad a in ads)
+                {
+                    if(!result.Contains(a)) result.Add(a);
+                }
+            }
+
+            return result;
+        }
         public ActionResult BannedWordInserted()
         {
             return View();

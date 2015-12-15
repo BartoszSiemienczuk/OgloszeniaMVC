@@ -12,6 +12,9 @@ using Ogloszenia.Models;
 using Ogloszenia.DAL;
 using System.Net;
 using System.Data.Entity;
+using System.Data.Entity.Core;
+using System.Data.Entity.Core.Objects;
+using System.Data.Entity.Infrastructure;
 
 namespace Ogloszenia.Controllers
 {
@@ -26,7 +29,7 @@ namespace Ogloszenia.Controllers
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -38,9 +41,9 @@ namespace Ogloszenia.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -124,7 +127,7 @@ namespace Ogloszenia.Controllers
             // If a user enters incorrect codes for a specified amount of time then the user account 
             // will be locked out for a specified amount of time. 
             // You can configure the account lockout settings in IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
+            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -159,8 +162,8 @@ namespace Ogloszenia.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
@@ -436,9 +439,12 @@ namespace Ogloszenia.Controllers
         // GET /Account/Edit/5
         public ActionResult Edit(string id)
         {
-            if (id == null)
+            if (id == null && !User.IsInRole("User"))
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            } else
+            {
+                id = User.Identity.GetUserId();
             }
             ApplicationUser user = db.Users.Find(id);
             if (user == null)
@@ -450,13 +456,24 @@ namespace Ogloszenia.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "UserName,Email,PhoneNumber,PasswordHash")] ApplicationUser user)
+        public ActionResult Edit([Bind(Include = "Id,UserName,Email,PhoneNumber,PasswordHash,adsPerPage,SecurityStamp")] ApplicationUser user)
         {
             if (ModelState.IsValid)
             {
+                if (user.adsPerPage > 50) user.adsPerPage = 50;
+                if (user.adsPerPage < 1) user.adsPerPage = 1;
                 db.Entry(user).State = EntityState.Modified;
-                AdsContext.SaveChanges(db);
-                return RedirectToAction("Manage");
+                db.SaveChanges();
+
+                if(User.IsInRole("Admin"))
+                {
+                    return RedirectToAction("Manage");
+                } 
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+
             }
             return View(user);
         }

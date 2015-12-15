@@ -1,8 +1,11 @@
 ﻿@using Ogloszenia.Models
+@using PagedList;
+@using PagedList.Mvc; 
+@model IPagedList<Ogloszenia.Models.Ad>
 @{
     ViewBag.Title = "Przeglądaj ogłoszenia";
     var categories = (List<Ogloszenia.Models.Category>)ViewData["categories"];
-    var ads = (List<Ogloszenia.Models.Ad>)ViewData["ads"];
+    var ads = (IPagedList<Ogloszenia.Models.Ad>)ViewData["ads"];
 }
 
 <div class="col-xs-12 col-sm-4">
@@ -26,7 +29,13 @@
         </div>
     </div>
 </div>
-
+@using (Html.BeginForm("Index", "Ad", FormMethod.Get))
+{
+    @Html.TextBox("search")
+    <input type="submit"
+           name="submit"
+           value="Search" />
+}
 <div class="col-xs-12 col-sm-8">
     <table class="table">
         @foreach (var item in ads)
@@ -47,4 +56,9 @@
             </tr>
         }
     </table>
+    @Html.PagedListPager(ads, pageNumber => Url.Action("Index", new
+{
+    pageNumber,
+    search = Request.QueryString["search"]
+}))
 </div>

@@ -36,7 +36,8 @@ namespace Ogloszenia.Migrations
                 {
                     UserName = "admin.bartek@ogloszenia.sln",
                     Email = "admin.bartek@ogloszenia.sln",
-                    PhoneNumber = "127 001 007"
+                    PhoneNumber = "127 001 007",
+                    adsPerPage = 20
                 };
                 userManager.Create(user, "Admin123!");
 
@@ -62,7 +63,8 @@ namespace Ogloszenia.Migrations
                 {
                     UserName = "user.adam@ogloszenia.sln",
                     Email = "user.adam@ogloszenia.sln",
-                    PhoneNumber = "192 168 111"
+                    PhoneNumber = "192 168 111",
+                    adsPerPage = 20
                 };
                 userManager.Create(user, "Passw0rd!");
 
@@ -111,12 +113,28 @@ namespace Ogloszenia.Migrations
                     Content ="Lorem ipsum",
                     ContentShort ="Lorem ipsum (...)",
                     ExpirationDate =new DateTime(2015,11,20,18,00,00),
-                    Owner = context.Users.First(u => u.UserName == "user.adam@ogloszenia.sln"),
-                    Visits = 0
+                    Owner = context.Users.First(u => u.UserName == "user.adam@ogloszenia.sln")
                     }
         };
 
                 ads.ForEach(a => context.Ads.Add(a));
+                context.SaveChanges();
+            }
+        }
+
+        private void SeedBannedWords(AdsContext context)
+        {
+            if(!context.Ads.Any())
+            {
+                var words = new List<BannedWord>
+                {
+                    new BannedWord {Text = "Heroina" },
+                    new BannedWord {Text = "Kokaina" },
+                    new BannedWord {Text = "Haszysz" },
+                    new BannedWord {Text = "LSD" }
+                };
+
+                words.ForEach(w => context.BannedWords.Add(w));
                 context.SaveChanges();
             }
         }
