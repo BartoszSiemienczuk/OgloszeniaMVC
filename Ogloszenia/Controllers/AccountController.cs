@@ -158,10 +158,11 @@ namespace Ogloszenia.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, adsPerPage = 25 };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    UserManager.AddToRole(user.Id, "User");
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
@@ -442,11 +443,13 @@ namespace Ogloszenia.Controllers
             if (id == null && !User.IsInRole("User"))
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            } else
+            }
+            else
             {
                 id = User.Identity.GetUserId();
             }
             ApplicationUser user = db.Users.Find(id);
+
             if (user == null)
             {
                 return HttpNotFound();
@@ -465,10 +468,10 @@ namespace Ogloszenia.Controllers
                 db.Entry(user).State = EntityState.Modified;
                 db.SaveChanges();
 
-                if(User.IsInRole("Admin"))
+                if (User.IsInRole("Admin"))
                 {
                     return RedirectToAction("Manage");
-                } 
+                }
                 else
                 {
                     return RedirectToAction("Index", "Home");
