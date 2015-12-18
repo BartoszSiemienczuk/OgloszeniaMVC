@@ -28,7 +28,8 @@ namespace Ogloszenia.Controllers
             if (User.Identity.GetUserId() != null)
             {
                 adsPerPage = db.Users.Find(User.Identity.GetUserId()).adsPerPage;
-            } else
+            }
+            else
             {
                 adsPerPage = 15;
             }
@@ -43,7 +44,7 @@ namespace Ogloszenia.Controllers
             return View();
         }
 
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles = "Admin")]
         public ActionResult IndexAdmin()
         {
             ViewData["categories"] = db.Categories.ToList();
@@ -74,7 +75,7 @@ namespace Ogloszenia.Controllers
         {
             var categories = db.Categories.ToList();
             ViewData["categories"] = categories;
-            ViewData["categoriesSelect"] = new SelectList(categories,"CategoryID","Name");
+            ViewData["categoriesSelect"] = new SelectList(categories, "CategoryID", "Name");
             return View();
         }
 
@@ -141,10 +142,11 @@ namespace Ogloszenia.Controllers
         {
             if (ModelState.IsValid)
             {
-                if(ad.Content.Length > CONTENT_MAXLENGTH)
+                if (ad.Content.Length > CONTENT_MAXLENGTH)
                 {
                     ad.ContentShort = createShortContent(ad.Content);
-                } else
+                }
+                else
                 {
                     ad.ContentShort = ad.Content;
                 }
@@ -153,7 +155,7 @@ namespace Ogloszenia.Controllers
                     return RedirectToAction("BannedWordInserted");
                 }
                 db.Entry(ad).State = EntityState.Modified;
-                db.SaveChanges();                
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(ad);
@@ -195,9 +197,17 @@ namespace Ogloszenia.Controllers
         }
 
         // GET: Ad/Manage/5
-        public ActionResult Manage(long? id)
+        public ActionResult Manage(long? id, int? pageNumber)
         {
-            return View(db.Ads.Include(a => a.Owner));
+            var userId = User.Identity.GetUserId();
+            if (userId != null)
+            {
+                var adsPerPage = db.Users.Find(userId).adsPerPage;
+                var ads = db.Ads.Where(a => a.Owner.Id == userId).ToList().ToPagedList(pageNumber ?? 1, adsPerPage);
+                return View(ads);
+            }
+
+            return RedirectToAction("Index", "Home", null);
         }
 
         private String createShortContent(String input)
@@ -205,7 +215,7 @@ namespace Ogloszenia.Controllers
             String result = "";
             String[] words = input.Split(' ');
             int index = 0;
-            while(result.Length <= CONTENT_MAXLENGTH)
+            while (result.Length <= CONTENT_MAXLENGTH)
             {
                 result += words[index] + " ";
                 index++;
@@ -226,12 +236,12 @@ namespace Ogloszenia.Controllers
             List<Ad> result = new List<Ad>();
             string[] strings = search.Split(' ');
 
-            foreach(string s in strings)
+            foreach (string s in strings)
             {
                 List<Ad> ads = db.Ads.Where(a => a.Content.Contains(s) || a.Title.Contains(s)).ToList();
-                foreach(Ad a in ads)
+                foreach (Ad a in ads)
                 {
-                    if(!result.Contains(a)) result.Add(a);
+                    if (!result.Contains(a)) result.Add(a);
                 }
             }
 

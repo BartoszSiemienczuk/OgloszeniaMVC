@@ -76,7 +76,7 @@
                                 @if (ViewContext.HttpContext.User.IsInRole("User"))
                                 {
                                     <li>@Html.ActionLink("Dodaj nowe", "Create", "Ad")</li>
-                                    <li>@Html.ActionLink("Zarządzaj", "Manage", "Ad", null, HttpContext.Current.User.Identity.GetUserId())</li>
+                                    <li>@Html.ActionLink("Zarządzaj", "Manage", "Ad")</li>
                                 }
                             </ul>
                         </li>

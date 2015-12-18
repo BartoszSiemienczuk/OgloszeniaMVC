@@ -1,4 +1,6 @@
-﻿@model IEnumerable<Ogloszenia.Models.Ad>
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model IPagedList<Ogloszenia.Models.Ad>
 
 @{
     ViewBag.Title = "Manage";
@@ -6,38 +8,42 @@
 }
 
 <h2>Manage</h2>
+    <table class="table">
+        <tr>
+            <th>
+                Tytuł
+            </th>
+            <th>
+                Krótka treść
+            </th>
+            <th>
+                Data ważności
+            </th>
+            <th></th>
+        </tr>
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Title)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ContentShort)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ExpirationDate)
-        </th>
-        <th></th>
-    </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Title
+                </td>
+                <td>
+                    @item.ContentShort
+                </td>
+                <td>
+                    @item.ExpirationDate
+                </td>
+                <td>
+                    @Html.ActionLink("Edytuj", "Edit", new { id = item.AdID }) |
+                    @Html.ActionLink("Szczegóły", "Details", new { id = item.AdID }) |
+                    @Html.ActionLink("Usuń", "Delete", new { id = item.AdID })
+                </td>
+            </tr>
+        }
+    </table>
+    @Html.PagedListPager(Model, pageNumber => Url.Action("Manage", new
+{
+    pageNumber,
+}))
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Title)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ContentShort)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ExpirationDate)
-        </td>
-        <td>
-            @Html.ActionLink("Edytuj", "Edit", new { id=item.AdID }) |
-            @Html.ActionLink("Szczegóły", "Details", new { id=item.AdID }) |
-            @Html.ActionLink("Usuń", "Delete", new { id=item.AdID })
-        </td>
-    </tr>
-}
-
-</table>

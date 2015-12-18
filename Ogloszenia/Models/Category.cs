@@ -12,6 +12,7 @@ namespace Ogloszenia.Models
         public virtual Category ParentCategory { get; set; }
         public String Name { get; set; }
         public virtual ICollection<Category> ChildrenCollection { get; set; }
+        public virtual ICollection<Ad> AdsCollection { get; set; }
 
         public List<Category> getChildCategories()
         {

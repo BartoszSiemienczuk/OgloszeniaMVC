@@ -15,6 +15,7 @@ namespace Ogloszenia.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
+            AutomaticMigrationDataLossAllowed = true;
         }
 
         protected override void Seed(AdsContext context)
@@ -35,7 +36,7 @@ namespace Ogloszenia.Migrations
                 var user = new ApplicationUser
                 {
                     UserName = "admin@ogloszenia.sln",
-                    Email = "admink@ogloszenia.sln",
+                    Email = "admin@ogloszenia.sln",
                     PhoneNumber = "127 001 007",
                     adsPerPage = 20
                 };
@@ -124,7 +125,7 @@ namespace Ogloszenia.Migrations
 
                 context.SaveChanges();
 
-                Category SamochodyOsobowe = new Category { Name = "Samochody osobowe" };
+                Category SamochodyOsobowe = new Category { Name = "Samochody osobowe", ParentCategory = context.Categories.First(c => c.Name == "Motoryzacja") };
 
                 var subcategories = new List<Category>
             {
