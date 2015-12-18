@@ -475,10 +475,23 @@ namespace Ogloszenia.Controllers
         {
             if (ModelState.IsValid)
             {
+                //Ograniczenie ilości ogłoszeń / użytkowników (admin) w ramach jednej strony
                 if (user.adsPerPage > 50) user.adsPerPage = 50;
                 if (user.adsPerPage < 1) user.adsPerPage = 1;
+
+                //Sprawdzenie, czy nowo wpisany mail nie występuje już w bazie
+
+
                 db.Entry(user).State = EntityState.Modified;
-                db.SaveChanges();
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch(Exception e)
+                {
+                    return View("EmailExists");
+                }
+
 
                 if (User.IsInRole("Admin"))
                 {
