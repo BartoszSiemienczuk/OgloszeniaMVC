@@ -1,6 +1,6 @@
 ﻿@using Ogloszenia.Models
 @using PagedList;
-@using PagedList.Mvc; 
+@using PagedList.Mvc;
 @model IPagedList<Ogloszenia.Models.Ad>
 @{
     ViewBag.Title = "Przeglądaj ogłoszenia";
@@ -8,22 +8,38 @@
     var ads = (IPagedList<Ogloszenia.Models.Ad>)ViewData["ads"];
 }
 
+@helper DisplayChildrenCategories(List<Ogloszenia.Models.Category> categories)
+{
+    <ul>
+        @if (categories.Any())
+        {
+            foreach(Category c in categories) 
+            {
+                <li>@Html.ActionLink(c.Name, "Index", new {
+                    categoryID = c.CategoryID,
+                    search = Request.QueryString["search"],
+                    pageNumber = Request.QueryString["pageNumber"]
+                    })</li>
+                @DisplayChildrenCategories(c.getChildCategories());
+            }
+        }
+    </ul>
+
+}
+
 <div class="col-xs-12 col-sm-4">
     <div class="panel panel-default">
         <div class="panel-heading">Kategorie</div>
+        @Html.ActionLink("Wszystkie kategorie", "Index")
         <div class="panel-body">
             <ul>
-                @foreach (Category c in categories)
-                {
-                    <li>
-                        <a href="#">@c.Name</a>
-                        <ul>
-                            @foreach (Category c1 in c.getChildCategories())
-                            {
-                                <li>@c1.Name</li>
-                            }
-                        </ul>
-                    </li>
+                @foreach (Category c in categories){
+                    <li>@Html.ActionLink(c.Name, "Index", new{
+                       categoryID = c.CategoryID,
+                       search = Request.QueryString["search"],
+                       pageNumber = Request.QueryString["pageNumber"]
+                   })</li>
+                @DisplayChildrenCategories(c.getChildCategories())
                 }
             </ul>
         </div>

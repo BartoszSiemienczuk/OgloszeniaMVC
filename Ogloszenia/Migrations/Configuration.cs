@@ -92,7 +92,7 @@ namespace Ogloszenia.Migrations
                 });
                 context.SaveChanges();
 
-                userManager.AddToRole(user1.Id, "User");
+                userManager.AddToRole(user2.Id, "User");
 
             }
         }

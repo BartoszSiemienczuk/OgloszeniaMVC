@@ -1,7 +1,22 @@
-﻿@model Ogloszenia.Models.Ad
+﻿@using Ogloszenia.Models;
+@model Ogloszenia.Models.Ad
+        
 
 @{
     ViewBag.Title = "Details";
+}
+
+
+@helper DisplayCategories(ICollection<Ogloszenia.Models.Category> categories)
+{
+String result = "";
+foreach(Category c in categories.OrderBy(c => c.Name))
+{
+    result += c.Name + ", ";
+}
+result = result.Substring(0, result.Length - 2);
+@Html.Raw(result)
+
 }
 
 <h2>Details</h2>
@@ -40,6 +55,14 @@
 
         <dd>
             @Html.DisplayFor(model => model.Visits)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Category) 
+        </dt>
+
+        <dd>
+            @DisplayCategories(Model.Category)
         </dd>
 
     </dl>

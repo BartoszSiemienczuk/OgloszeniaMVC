@@ -15,6 +15,7 @@ using System.Data.Entity;
 using System.Data.Entity.Core;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Infrastructure;
+using PagedList;
 
 namespace Ogloszenia.Controllers
 {
@@ -432,9 +433,20 @@ namespace Ogloszenia.Controllers
         }
 
         // GET /Account/Manage/
-        public ActionResult Manage()
+        public ActionResult Manage(int? pageNumber)
         {
-            return View(db.Users.ToList());
+            int usersPerPage;
+            if (User.Identity.GetUserId() != null)
+            {
+                usersPerPage = db.Users.Find(User.Identity.GetUserId()).adsPerPage;
+            }
+            else
+            {
+                usersPerPage = 15;
+            }
+
+            var users = db.Users.ToList().ToPagedList(pageNumber ?? 1, usersPerPage);
+            return View(users);
         }
 
         // GET /Account/Edit/5

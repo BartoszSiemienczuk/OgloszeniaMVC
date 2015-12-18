@@ -1,4 +1,6 @@
-﻿@model IEnumerable<Ogloszenia.Models.ApplicationUser>
+﻿@using PagedList;
+@using PagedList.Mvc; 
+@model IPagedList<Ogloszenia.Models.ApplicationUser>
 
 @{
     ViewBag.Title = "ManageUserAccounts";
@@ -13,14 +15,14 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Email)
+            Email
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.PhoneNumber)
+            Nr telefonu
         </th>
 
         <th>
-            @Html.DisplayNameFor(model => model.UserName)
+            Nazwa użytkownika
         </th>
         <th></th>
     </tr>
@@ -43,5 +45,8 @@
         </td>
     </tr>
 }
-
 </table>
+@Html.PagedListPager(Model, pageNumber => Url.Action("Manage", new
+{
+    pageNumber,
+}))
