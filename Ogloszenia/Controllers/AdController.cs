@@ -16,7 +16,7 @@ namespace Ogloszenia.Controllers
     public class AdController : Controller
     {
         private AdsContext db = AdsContext.Create();
-        private int CONTENT_MAXLENGTH = 100;
+        private int CONTENT_MAXLENGTH = 65;
 
         // GET: Ad
         [AllowAnonymous]
@@ -24,7 +24,14 @@ namespace Ogloszenia.Controllers
         {
             ViewData["categories"] = db.Categories.ToList();
 
-            int adsPerPage = db.Users.Find(User.Identity.GetUserId()).adsPerPage;
+            int adsPerPage;
+            if (User.Identity.GetUserId() != null)
+            {
+                adsPerPage = db.Users.Find(User.Identity.GetUserId()).adsPerPage;
+            } else
+            {
+                adsPerPage = 15;
+            }
 
             var ads = db.Ads.ToList().ToPagedList(pageNumber ?? 1, adsPerPage);
 
