@@ -1,4 +1,4 @@
-namespace Ogloszenia.Migrations
+Ôªønamespace Ogloszenia.Migrations
 {
     using DAL;
     using Microsoft.AspNet.Identity;
@@ -102,19 +102,19 @@ namespace Ogloszenia.Migrations
             if (!context.Categories.Any())
             {
                 Category Bazowa = new Category { Name = "Kategoria bazowa" };
-                Category Nieruchomoúci = new Category { Name = "Nieruchomoúci", ParentCategory = Bazowa };
+                Category Nieruchomo≈õci = new Category { Name = "Nieruchomo≈õci", ParentCategory = Bazowa };
                 Category Motoryzacja = new Category { Name = "Motoryzacja", ParentCategory = Bazowa };
                 Category Praca = new Category { Name = "Praca", ParentCategory = Bazowa };
                 Category Sprzedam = new Category { Name = "Sprzedam", ParentCategory = Bazowa };
-                Category ZamieniÍ = new Category { Name = "ZamieniÍ", ParentCategory = Bazowa };
+                Category Zamieniƒô = new Category { Name = "Zamieniƒô", ParentCategory = Bazowa };
                 var categories = new List<Category>
             {
                 Bazowa,
-                Nieruchomoúci,
+                Nieruchomo≈õci,
                 Motoryzacja,
                 Praca,
                 Sprzedam,
-                ZamieniÍ
+                Zamieniƒô
             };
 
                 categories.ForEach((s) =>
@@ -129,13 +129,13 @@ namespace Ogloszenia.Migrations
 
                 var subcategories = new List<Category>
             {
-                new Category { Name="Mieszkania", ParentCategory=Nieruchomoúci  },
-                new Category { Name="Domy jednorodzinne", ParentCategory=Nieruchomoúci  },
+                new Category { Name="Mieszkania", ParentCategory=Nieruchomo≈õci  },
+                new Category { Name="Domy jednorodzinne", ParentCategory=Nieruchomo≈õci  },
                 SamochodyOsobowe,
                 new Category { Name="Zabytkowe samochody osobowe", ParentCategory=SamochodyOsobowe  },
-                new Category { Name="Samochody ciÍøarowe", ParentCategory=Motoryzacja  },
+                new Category { Name="Samochody ciƒô≈ºarowe", ParentCategory=Motoryzacja  },
                 new Category { Name="Praca sezonowa", ParentCategory=Praca  },
-                new Category { Name="Praca sta≥a", ParentCategory=Praca  },
+                new Category { Name="Praca sta≈Ça", ParentCategory=Praca  },
                 new Category { Name="Praca dorywcza", ParentCategory=Praca  },
             };
 
@@ -159,8 +159,8 @@ namespace Ogloszenia.Migrations
                 new Ad {
                     Title ="Lorem ipsum ",
                     Category = new List<Category>{
-                        context.Categories.First(c => c.Name== "Nieruchomoúci"),
-                        context.Categories.First(c => c.Name== "ZamieniÍ")
+                        context.Categories.First(c => c.Name== "Nieruchomo≈õci"),
+                        context.Categories.First(c => c.Name== "Zamieniƒô")
                     },
                     Content = "Curabitur vitae dui eleifend, lobortis lectus in, feugiat elit. Suspendisse potenti. Ut vel ultricies mauris. Donec pulvinar consectetur massa sed tristique. Integer velit libero, rutrum in purus sit amet, imperdiet vehicula purus. Phasellus ipsum magna, gravida sed metus a, ornare tristique felis.",
                     ContentShort = "Curabitur vitae dui eleifend, lobortis lectus in (...)",
@@ -172,7 +172,7 @@ namespace Ogloszenia.Migrations
                     Category =  new List<Category>{
                         context.Categories.First(c => c.Name== "Mieszkania"),
                         context.Categories.First(c => c.Name== "Sprzedam"),
-                        context.Categories.First(c => c.Name== "Nieruchomoúci")
+                        context.Categories.First(c => c.Name== "Nieruchomo≈õci")
                     },
                     Content = "Sed justo orci, viverra non arcu varius, auctor sagittis felis. Phasellus vitae facilisis urna. Nam sed posuere dui. Etiam tincidunt, enim id sodales ornare, tellus ex lobortis dolor, in ultrices enim lorem et lorem. Nunc dui nisl, finibus non malesuada vel, convallis eget ligula",
                     ContentShort = "Sed justo orci, viverra non arcu varius, auctor sagittis felis. (...)",
@@ -184,7 +184,7 @@ namespace Ogloszenia.Migrations
                     Category =  new List<Category>{
                         context.Categories.First(c => c.Name== "Mieszkania"),
                         context.Categories.First(c => c.Name== "Sprzedam"),
-                        context.Categories.First(c => c.Name== "Nieruchomoúci")
+                        context.Categories.First(c => c.Name== "Nieruchomo≈õci")
                     },
                     Content = "Aenean non convallis dolor. Mauris rhoncus ligula sed quam elementum volutpat. Nunc blandit eu quam a fringilla. Curabitur porttitor orci nisi, vitae viverra enim rutrum nec",
                     ContentShort = "Aenean non convallis dolor. Mauris rhoncus ligula sed quam (...)",
@@ -196,7 +196,7 @@ namespace Ogloszenia.Migrations
                     Category =  new List<Category>{
                         context.Categories.First(c => c.Name== "Domy jednorodzinne"),
                         context.Categories.First(c => c.Name== "Sprzedam"),
-                        context.Categories.First(c => c.Name== "Nieruchomoúci")
+                        context.Categories.First(c => c.Name== "Nieruchomo≈õci")
                     },
                     Content = "Aliquam varius porttitor quam, ut varius enim mollis nec. Sed hendrerit nisi et ante imperdiet, ac eleifend elit convallis. In in metus quis ante efficitur tincidunt et vitae metus.",
                     ContentShort = "Aliquam varius porttitor quam, ut varius enim mollis nec. (...)",
@@ -207,8 +207,8 @@ namespace Ogloszenia.Migrations
                     Title ="Suspendisse placerat enim ",
                     Category =  new List<Category>{
                         context.Categories.First(c => c.Name== "Domy jednorodzinne"),
-                        context.Categories.First(c => c.Name== "ZamieniÍ"),
-                        context.Categories.First(c => c.Name== "Nieruchomoúci")
+                        context.Categories.First(c => c.Name== "Zamieniƒô"),
+                        context.Categories.First(c => c.Name== "Nieruchomo≈õci")
                     },
                     Content = "Suspendisse placerat enim ut ligula gravida laoreet. Donec ornare auctor neque, et maximus enim ornare quis. In hac habitasse platea dictumst. Nulla pulvinar, erat sit amet luctus pharetra, sem turpis facilisis diam, nec lacinia lectus leo at mauris. Integer sollicitudin leo et nisl posuere accumsan. ",
                     ContentShort = "Suspendisse placerat enim ut ligula gravida laoreet.(...)",
@@ -233,7 +233,7 @@ namespace Ogloszenia.Migrations
                     Title ="Vivamus",
                     Category =  new List<Category>{
                         context.Categories.First(c => c.Name== "Zabytkowe samochody osobowe"),
-                        context.Categories.First(c => c.Name== "ZamieniÍ"),
+                        context.Categories.First(c => c.Name== "Zamieniƒô"),
                         context.Categories.First(c => c.Name== "Motoryzacja"),
                     },
                     Content = "Vivamus vel magna eu mi hendrerit elementum. Nulla consequat turpis rhoncus tortor ullamcorper, ac tincidunt est aliquam. Phasellus risus erat, accumsan ut dui eget, mollis porta sapien.",
@@ -244,7 +244,7 @@ namespace Ogloszenia.Migrations
                 new Ad {
                     Title ="Suspendisse placerat enim ",
                     Category =  new List<Category>{
-                        context.Categories.First(c => c.Name== "Samochody ciÍøarowe"),
+                        context.Categories.First(c => c.Name== "Samochody ciƒô≈ºarowe"),
                         context.Categories.First(c => c.Name== "Sprzedam")
                     },
                     Content = "Suspendisse placerat enim ut ligula gravida laoreet. Donec ornare auctor neque, et maximus enim ornare quis. In hac habitasse platea dictumst. Nulla pulvinar, erat sit amet luctus pharetra, sem turpis facilisis diam, nec lacinia lectus leo at mauris. Integer sollicitudin leo et nisl posuere accumsan. ",
@@ -267,7 +267,7 @@ namespace Ogloszenia.Migrations
                 new Ad {
                     Title ="Phasellus id ligula sit",
                     Category =  new List<Category>{
-                        context.Categories.First(c => c.Name== "Praca sta≥a"),
+                        context.Categories.First(c => c.Name== "Praca sta≈Ça"),
                         context.Categories.First(c => c.Name== "Praca")
                     },
                     Content = "Phasellus id ligula sit amet magna consectetur placerat. Ut a libero non urna condimentum cursus. Morbi sed nisl dictum, tempor felis eu, condimentum dui. ",
@@ -294,9 +294,9 @@ namespace Ogloszenia.Migrations
                     new BannedWord {Text = "Marihuana" },
                     new BannedWord {Text = "LSD" },
                     new BannedWord {Text = "Metaamfetamina" },
-                    new BannedWord {Text = "Z≥odziej" },
+                    new BannedWord {Text = "Z≈Çodziej" },
                     new BannedWord {Text = "Oszust" },
-                    new BannedWord {Text = "K≥amca"},
+                    new BannedWord {Text = "K≈Çamca"},
                     new BannedWord {Text = "Idiota" }
                 };
 
