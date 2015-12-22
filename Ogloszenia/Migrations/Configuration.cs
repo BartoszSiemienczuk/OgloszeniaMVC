@@ -24,6 +24,7 @@ namespace Ogloszenia.Migrations
             SeedUser(context);
             SeedCategories(context);
             SeedAds(context);
+            SeedBannedWords(context);
         }
 
         private void SeedAdmin(IdentityDbContext<ApplicationUser> context)
@@ -284,7 +285,7 @@ namespace Ogloszenia.Migrations
 
         private void SeedBannedWords(AdsContext context)
         {
-            if (!context.Ads.Any())
+            if (!context.BannedWords.Any())
             {
                 var words = new List<BannedWord>
                 {

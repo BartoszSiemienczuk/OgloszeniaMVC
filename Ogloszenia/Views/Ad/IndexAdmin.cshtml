@@ -1,48 +1,76 @@
 ﻿@using Ogloszenia.Models
+@using PagedList;
+@using PagedList.Mvc;
 @{
     ViewBag.Title = "Przeglądaj ogłoszenia";
     var categories = (List<Ogloszenia.Models.Category>)ViewData["categories"];
-    var ads = (List<Ogloszenia.Models.Ad>)ViewData["ads"];
+    var ads = (IPagedList<Ogloszenia.Models.Ad>)ViewData["ads"];
+}
+
+@helper DisplayChildrenCategories(List<Ogloszenia.Models.Category> categories)
+{
+    <ul>
+        @if (categories.Any())
+        {
+            foreach (Category c in categories)
+            {
+                <li>
+                    @Html.ActionLink(c.Name, "IndexAdmin", new
+               {
+                   categoryID = c.CategoryID,
+                   search = Request.QueryString["search"],
+                   pageNumber = Request.QueryString["pageNumber"]
+               })
+            </li>
+            @DisplayChildrenCategories(c.getChildCategories());
+            }
+        }
+    </ul>
+
 }
 
 <div class="col-xs-12 col-sm-4">
     <div class="panel panel-default">
         <div class="panel-heading">Kategorie</div>
+        @Html.ActionLink("Wszystkie kategorie", "IndexAdmin")
         <div class="panel-body">
             <ul>
                 @foreach (Category c in categories)
                 {
                     <li>
-                        <a href="#">@c.Name</a>
-                        <ul>
-                            @foreach (Category c1 in c.getChildCategories())
-                            {
-                                <li>@c1.Name</li>
-                            }
-                        </ul>
-                    </li>
+                        @Html.ActionLink(c.Name, "IndexAdmin", new
+                   {
+                       categoryID = c.CategoryID,
+                       search = Request.QueryString["search"],
+                       pageNumber = Request.QueryString["pageNumber"]
+                   })
+                </li>
+                @DisplayChildrenCategories(c.getChildCategories())
                 }
             </ul>
         </div>
     </div>
 </div>
-
+@using (Html.BeginForm("IndexAdmin", "Ad", FormMethod.Get))
+{
+    @Html.TextBox("search")
+    <input type="submit"
+           name="submit"
+           value="Search" />
+}
 <div class="col-xs-12 col-sm-8">
     <table class="table">
         @foreach (var item in ads)
             {
             <tr>
                 <td>
-                    @item.AdID
+                    @Html.DisplayName(item.Title)
                 </td>
                 <td>
-                    @item.Title
+                    @item.ContentShort
                 </td>
                 <td>
                     @item.Visits
-                </td>
-                <td>
-                    @item.Owner.Email
                 </td>
                 <td>
                     @Html.ActionLink("Edytuj", "Edit", new { id = item.AdID }) |
@@ -52,4 +80,9 @@
             </tr>
         }
     </table>
+    @Html.PagedListPager(ads, pageNumber => Url.Action("IndexAdmin", new
+{
+    pageNumber,
+    search = Request.QueryString["search"]
+}))
 </div>

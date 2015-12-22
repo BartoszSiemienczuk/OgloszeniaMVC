@@ -56,10 +56,38 @@ namespace Ogloszenia.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        public ActionResult IndexAdmin()
+        public ActionResult IndexAdmin(string search, int? pageNumber, int? categoryID)
         {
-            ViewData["categories"] = db.Categories.ToList();
-            ViewData["ads"] = db.Ads.ToList();
+            //Wybór kategorii do wyświetlenia na pasku kategorii
+            var baseCategoryId = db.Categories.First(c => c.Name == "Kategoria bazowa").CategoryID;
+            ViewData["categories"] = db.Categories.Where(c => c.ParentCategory.CategoryID == baseCategoryId).OrderBy(c => c.Name).ToList();
+
+            //Ustalenie docelowej ilości ogłoszeń na stronie
+            int adsPerPage;
+            if (User.Identity.GetUserId() != null)
+            {
+                adsPerPage = db.Users.Find(User.Identity.GetUserId()).adsPerPage;
+            }
+            else
+            {
+                adsPerPage = 15;
+            }
+
+            var ads = db.Ads.ToList().ToPagedList(pageNumber ?? 1, adsPerPage);
+
+            //Znalezienie wszystkich ogłoszeń zawierających wpisany tekst 
+            if (search != "" && search != null)
+            {
+                ads = findAllAds(search).ToPagedList(pageNumber ?? 1, adsPerPage);
+            }
+
+            //Wyświetlenie ogłoszeń wyłącznie z wybranej kategorii
+            if (categoryID != null)
+            {
+                ads = ads.Where(a => a.Category.Contains(db.Categories.Find(categoryID))).ToList().ToPagedList(pageNumber ?? 1, adsPerPage);
+            }
+
+            ViewData["ads"] = ads;
             return View();
         }
 
