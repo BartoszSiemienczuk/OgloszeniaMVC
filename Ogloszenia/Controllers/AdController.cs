@@ -92,6 +92,7 @@ namespace Ogloszenia.Controllers
         }
 
         // GET: Ad/Details/5
+        [AllowAnonymous]
         public ActionResult Details(long? id)
         {
             if (id == null)
@@ -110,6 +111,7 @@ namespace Ogloszenia.Controllers
         }
 
         // GET: Ad/Create
+        [Authorize(Roles = "Admin, User")]
         public ActionResult Create()
         {
             var categories = db.Categories.ToList();
@@ -131,6 +133,7 @@ namespace Ogloszenia.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, User")]
         public ActionResult Create([Bind(Include = "AdID,Title,Content,ExpirationDate")] Ad ad)
         {
             if (ModelState.IsValid)
@@ -158,6 +161,7 @@ namespace Ogloszenia.Controllers
         }
 
         // GET: Ad/Edit/5
+        [Authorize(Roles = "Admin, User")]
         public ActionResult Edit(long? id)
         {
             if (id == null)
@@ -177,6 +181,7 @@ namespace Ogloszenia.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, User")]
         public ActionResult Edit([Bind(Include = "AdID,Title,Content,ExpirationDate")] Ad ad)
         {
             if (ModelState.IsValid)
@@ -195,12 +200,13 @@ namespace Ogloszenia.Controllers
                 }
                 db.Entry(ad).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Manage");
             }
             return View(ad);
         }
 
         // GET: Ad/Delete/5
+        [Authorize(Roles = "Admin, User")]
         public ActionResult Delete(long? id)
         {
             if (id == null)
@@ -218,6 +224,7 @@ namespace Ogloszenia.Controllers
         // POST: Ad/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, User")]
         public ActionResult DeleteConfirmed(long id)
         {
             Ad ad = db.Ads.Find(id);
@@ -236,6 +243,7 @@ namespace Ogloszenia.Controllers
         }
 
         // GET: Ad/Manage/5
+        [Authorize(Roles = "Admin, User")]
         public ActionResult Manage(long? id, int? pageNumber)
         {
             var userId = User.Identity.GetUserId();

@@ -433,6 +433,7 @@ namespace Ogloszenia.Controllers
         }
 
         // GET /Account/Manage/
+        [Authorize(Roles = "Admin")]
         public ActionResult Manage(int? pageNumber)
         {
             int usersPerPage;
@@ -470,6 +471,7 @@ namespace Ogloszenia.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin, User")]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,UserName,Email,PhoneNumber,PasswordHash,adsPerPage,SecurityStamp")] ApplicationUser user)
         {
@@ -507,6 +509,7 @@ namespace Ogloszenia.Controllers
         }
 
         //GET //Account/Details/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Details(string id)
         {
             if (id == null)
@@ -522,6 +525,7 @@ namespace Ogloszenia.Controllers
         }
 
         //GET //Account/Delete/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(string id)
         {
             if (id == null)
@@ -538,6 +542,7 @@ namespace Ogloszenia.Controllers
 
         //POST //Account/Delete/5
         [HttpPost, ActionName("Delete")]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {

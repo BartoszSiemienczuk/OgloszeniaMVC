@@ -2,6 +2,7 @@ namespace Ogloszenia.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.Data.Entity;
     using System.Linq;
 
@@ -13,6 +14,7 @@ namespace Ogloszenia.Models
         }
 
         public long AdID { get; set; }
+        [StringLength(50, ErrorMessage = "Maksymalna d³ugoœæ tytu³u wynosi 50 znaków")]     
         public String Title { get; set; }
 
         public String Content { get; set; }
@@ -21,6 +23,7 @@ namespace Ogloszenia.Models
 
         public String ContentShort { get; set; }
 
+        [DataType(DataType.DateTime)]
         public DateTime ExpirationDate { get; set; }
 
         public virtual ApplicationUser Owner { get; set; }

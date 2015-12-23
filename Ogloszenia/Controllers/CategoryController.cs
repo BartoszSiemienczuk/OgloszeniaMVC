@@ -16,12 +16,14 @@ namespace Ogloszenia.Controllers
         private AdsContext db = new AdsContext();
 
         // GET: Category
+        [Authorize(Roles = "Admin")]
         public ActionResult Index()
         {
             return View(db.Categories.ToList());
         }
 
         // GET: Category/Details/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Details(long? id)
         {
             if (id == null)
@@ -37,7 +39,7 @@ namespace Ogloszenia.Controllers
         }
 
         // GET: Category/Create
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
             var categories = db.Categories.ToList();
@@ -66,6 +68,7 @@ namespace Ogloszenia.Controllers
         }
 
         // GET: Category/Edit/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(long? id)
         {
             if (id == null)
@@ -85,6 +88,7 @@ namespace Ogloszenia.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit([Bind(Include = "CategoryID,Name")] Category category)
         {
             if (ModelState.IsValid)
@@ -97,6 +101,7 @@ namespace Ogloszenia.Controllers
         }
 
         // GET: Category/Delete/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(long? id)
         {
             if (id == null)
@@ -114,6 +119,7 @@ namespace Ogloszenia.Controllers
         // POST: Category/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult DeleteConfirmed(long id)
         {
             Category category = db.Categories.Find(id);

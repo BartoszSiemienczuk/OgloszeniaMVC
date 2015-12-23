@@ -13,6 +13,7 @@ namespace Ogloszenia.Controllers
     {
         private AdsContext db = AdsContext.Create();
         // GET: Admin
+        [Authorize(Roles = "Admin")]
         public ActionResult Index()
         {
             var bannedWords = db.BannedWords.ToList();
@@ -20,6 +21,7 @@ namespace Ogloszenia.Controllers
         }
 
         // GET: Admin/Create
+        [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
             return View();
@@ -27,6 +29,7 @@ namespace Ogloszenia.Controllers
 
         // POST: Admin/Create
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public ActionResult Create([Bind(Include = "Text")] BannedWord word)
         {
             try
@@ -42,6 +45,7 @@ namespace Ogloszenia.Controllers
         }
 
         // GET: Admin/Edit/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(int id)
         {
             return View(db.BannedWords.Find(id));
@@ -49,6 +53,7 @@ namespace Ogloszenia.Controllers
 
         // POST: Admin/Edit/5
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit([Bind(Include = "id,Text")] BannedWord word)
         {
             try
@@ -64,6 +69,7 @@ namespace Ogloszenia.Controllers
         }
 
         // GET: Admin/Delete/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int id)
         {
             return View(db.BannedWords.Find(id));
@@ -71,6 +77,7 @@ namespace Ogloszenia.Controllers
 
         // POST: Admin/Delete/5
         [HttpPost, ActionName("Delete")]
+        [Authorize(Roles = "Admin")]
         public ActionResult DeleteConfirmed(int id)
         {
             try
