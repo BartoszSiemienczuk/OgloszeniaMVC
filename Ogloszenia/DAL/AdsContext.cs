@@ -66,5 +66,7 @@ namespace Ogloszenia.DAL
                 ); // Add the original exception as the innerException
             }
         }
+
+        public System.Data.Entity.DbSet<Ogloszenia.Models.News> News { get; set; }
     }
 }

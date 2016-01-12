@@ -25,6 +25,7 @@
             SeedCategories(context);
             SeedAds(context);
             SeedBannedWords(context);
+            SeedNews(context);
         }
 
         private void SeedAdmin(IdentityDbContext<ApplicationUser> context)
@@ -306,5 +307,33 @@
             }
         }
 
+        private void SeedNews(AdsContext context)
+        {
+            if(!context.News.Any())
+            {
+                var news = new List<News>
+                {
+                    new News {
+                        Title = "Otwarcie strony",
+                        Content = "Otwieramy w niedzielę!! Mega promocje!! Zaproś brata, kumpla, babcię i kochankę! Litwo! Ojczyzno moja! Ty jesteś jak zdrowie. Ile cię stracił. Dziś piękność zda się dowie kto gości Żydom do Litwy kwestarz z kilku dzieje tego lubię. Gładź drużkę jak bazyliszek. asesor mniej zgorszenia. Ach, ja pamiętam za granicę, to mówiąc, że jacyś Francuzi wymowny zrobili wynalazek: iż ludzie są architektury. Choć Sędzia go miało śmieszy to mówiąc, że ją piastował.",
+                    ExpirationDate = new DateTime(2016,01,30,12,00,00)},
+                    new News {
+                        Title = "Lorem ipsum",
+                        Content = "Lorem ipsum dolor sit amet quam at libero. Morbi a lectus. Vestibulum lacinia id, bibendum tempus. Pellentesque ut diam. Aliquam semper. Sed porta nisl. Fusce et lorem. Cras suscipit, dolor sit amet erat. In metus hendrerit dolor non orci. Nunc justo. Vestibulum at nunc sollicitudin lorem, ut malesuada aliquet, arcu erat, fringilla ligula ut leo vitae metus. Curabitur urna nec leo sit amet, tellus. In pede. Donec orci ultricies in, ornare a, tellus. Fusce non dui aliquam ut, neque. Integer hendrerit risus. Sed fringilla et, commodo et, ultricies eu, aliquet elit. Proin sodales. Aenean lobortis urna. Vestibulum quam ante ipsum pretium nec, arcu.",
+                    ExpirationDate = new DateTime(2016,01,30,12,00,00)},
+                    new News {
+                        Title = "Lorem ipsum 2",
+                        Content = "Lorem ipsum dolor sit amet tempus ac, pede. Mauris nec tincidunt vel, lacinia quam in enim. Pellentesque habitant morbi tristique senectus et ultrices vel, ante. Ut eget orci luctus nisl. Nullam vulputate vehicula. Etiam dolor. Integer at eros. In porttitor vitae, vulputate tortor vehicula sed, dapibus non, ipsum. Duis quam nulla, vitae massa non dui. Nullam dui lectus sit amet, felis. Pellentesque habitant morbi tristique senectus et ultrices posuere cubilia Curae, Nullam augue turpis, accumsan lorem. Vivamus justo. Pellentesque nunc libero, consectetuer tincidunt eu, faucibus sit amet erat. Fusce facilisis eget, rutrum pede interdum viverra. Cras turpis at sem. Mauris euismod. Ut eu mollis aliquam, risus. Nunc tempor eros diam pede purus, vulputate tellus consectetuer arcu iaculis ante, vitae ultrices augue. Sed placerat consequat. Nulla venenatis nunc, mollis nunc lacus, suscipit dui aliquam tortor. Donec tortor. Aliquam vestibulum ac, ornare in, elementum fringilla fringilla faucibus, tortor venenatis consequat. Morbi id diam placerat elementum vitae, cursus lectus, porta ligula ut metus. Curabitur elit. Aenean sodales, velit libero ante, varius vehicula. Nunc in purus at sagittis lorem. In turpis eget leo sed.",
+                    ExpirationDate = new DateTime(2016,01,30,12,00,00)},
+                    new News {
+                        Title = "Wygasły news",
+                        Content = "Tego newsa nie powinna już być.",
+                    ExpirationDate = new DateTime(2015,01,30,12,00,00)},
+                };
+
+                news.ForEach((n) => context.News.Add(n));
+                context.SaveChanges();
+            }
+        }
     }
 }

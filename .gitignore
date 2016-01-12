@@ -1,0 +1,4 @@
+Ogloszenia/obj/*
+Ogloszenia/Migrations/*
+Ogloszenia/bin/*
+!Ogloszenia/Migrations/Configuration.cs
