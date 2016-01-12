@@ -54,27 +54,36 @@
 }
 <div class="col-xs-12 col-sm-8">
     <table class="table">
-        @foreach (var item in ads)
+        @if (ads.Any())
+        {
+            foreach (var item in ads)
             {
-            <tr>
-                <td>
-                    @Html.DisplayName(item.Title)
-                </td>
-                <td>
-                    @item.ContentShort
-                </td>
-                <td>
-                    @item.Visits
-                </td>
-                <td>
-                    @Html.ActionLink("Szczegóły", "Details", new { id = item.AdID })
-                </td>
-            </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayName(item.Title)
+                    </td>
+                    <td>
+                        @item.ContentShort
+                    </td>
+                    <td>
+                        @item.Visits
+                    </td>
+                    <td>
+                        @Html.ActionLink("Szczegóły", "Details", new { id = item.AdID })
+                    </td>
+                </tr>
+            }
+
+        }
+        else
+        {
+            <h1 style="color:#000;" class="text-center">Nic nie znaleziono!</h1>
+            <img class="img-responsive img-thumbnail" style="display:block; margin:0 auto;" src="images/travolta.gif"/>
         }
     </table>
     @Html.PagedListPager(ads, pageNumber => Url.Action("Index", new
-{
-    pageNumber,
-    search = Request.QueryString["search"]
-}))
+    {
+        pageNumber,
+        search = Request.QueryString["search"]
+    }))
 </div>
