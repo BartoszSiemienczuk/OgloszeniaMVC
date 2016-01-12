@@ -14,7 +14,7 @@ namespace Ogloszenia.Controllers
 
         public ActionResult Index()
         {
-            List<News> recentNews = db.News.Where(n => n.ExpirationDate > DateTime.Now).OrderByDescending(n => n.ExpirationDate).Take(3).ToList();
+            List<News> recentNews = db.News.Where(n => n.ExpirationDate > DateTime.Now).OrderBy(n => n.ExpirationDate).Take(3).ToList();
             ViewData["news"] = recentNews;
             return View();
         }
