@@ -25,5 +25,29 @@ namespace Ogloszenia.Controllers
 
             return View();
         }
+
+        public ActionResult YellowSkin()
+        {
+            HttpCookie cookie = new HttpCookie("OgloszeniaSkin");
+            cookie.Value = "yellow";
+            HttpContext.Response.SetCookie(cookie);
+            return RedirectToAction("Index", "Home");
+        }
+
+        public ActionResult BlueSkin()
+        {
+            HttpCookie cookie = new HttpCookie("OgloszeniaSkin");
+            cookie.Value = "blue";
+            HttpContext.Response.SetCookie(cookie);
+            return RedirectToAction("Index", "Home");
+        }
+
+        public ActionResult RedSkin()
+        {
+            HttpCookie cookie = new HttpCookie("OgloszeniaSkin");
+            cookie.Value = "red";
+            HttpContext.Response.SetCookie(cookie);
+            return RedirectToAction("Index", "Home");
+        }
     }
 }

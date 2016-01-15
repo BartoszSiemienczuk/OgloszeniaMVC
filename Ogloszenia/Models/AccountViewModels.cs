@@ -55,10 +55,10 @@ namespace Ogloszenia.Models
 
         [Required]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "Hasło")]
         public string Password { get; set; }
 
-        [Display(Name = "Remember me?")]
+        [Display(Name = "Zapamiętaj mnie?")]
         public bool RememberMe { get; set; }
     }
 
@@ -70,14 +70,14 @@ namespace Ogloszenia.Models
         public string Email { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "Pole {0} musi mieć co najmniej {2} znaków.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "Hasło")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Display(Name = "Potwierdź hasło")]
+        [Compare("Password", ErrorMessage = "Potwierdzenie hasła jest niepoprawne.")]
         public string ConfirmPassword { get; set; }
     }
 
@@ -91,11 +91,11 @@ namespace Ogloszenia.Models
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "Hasło")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
+        [Display(Name = "Potwierdź hasło")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 

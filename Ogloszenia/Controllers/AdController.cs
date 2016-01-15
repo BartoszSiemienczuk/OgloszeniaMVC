@@ -146,6 +146,12 @@ namespace Ogloszenia.Controllers
                 {
                     Category c = db.Categories.Find(cId);
                     ad.Category.Add(c);
+                    //dodajemy kategorie - rodziców
+                    while(c.ParentCategory!=null)
+                    {
+                        ad.Category.Add(c.ParentCategory);
+                        c = c.ParentCategory;
+                    }
                 }
             }
 

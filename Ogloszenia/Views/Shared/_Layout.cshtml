@@ -1,5 +1,7 @@
 ﻿@using Microsoft.AspNet.Identity;
-
+@{ 
+    var skinCookie = Request.Cookies.Get("OgloszeniaSkin").Value;
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,7 +14,22 @@
     <!-- core CSS -->
 
     @Styles.Render("~/Assets/css/bootstrap")
-    @Styles.Render("~/Assets/css")
+    @if(skinCookie==null || skinCookie.Equals("red"))
+    {
+        @Styles.Render("~/Assets/css");
+    }
+    else if (skinCookie.Equals("blue"))
+    {
+        @Styles.Render("~/Assets/bluecss");
+    }
+    else if (skinCookie.Equals("yellow"))
+    {
+        @Styles.Render("~/Assets/yellowcss");
+    }
+    else
+    {
+        @Styles.Render("~/Assets/css");
+    }
     @Styles.Render("~/Assets/css/responsive")
     <!--[if lt IE 9]>
     <script src="js/html5shiv.js"></script>
@@ -72,7 +89,6 @@
                                     <li>@Html.ActionLink("Przeglądaj", "Index", "Ad")</li>
                                 }
 
-                                <li>@Html.ActionLink("Szukaj", "Search", "Ad")</li>
                                 @if (ViewContext.HttpContext.User.IsInRole("User"))
                                 {
                                     <li>@Html.ActionLink("Dodaj nowe", "Create", "Ad")</li>
@@ -185,8 +201,9 @@
                 </div>
                 <div class="col-sm-6">
                     <ul class="pull-right">
-                        <li>@Html.ActionLink("Ogłoszenia", "Index", "Ad")</li>
-                        <li>@Html.ActionLink("Ogłoszenia", "Index", "Category")</li>
+                        <li>@Html.ActionLink("Czerwony", "RedSkin", "Home")</li>
+                        <li>@Html.ActionLink("Żółty", "YellowSkin", "Home")</li>
+                        <li>@Html.ActionLink("Niebieski", "BlueSkin", "Home")</li>
                     </ul>
                 </div>
             </div>
