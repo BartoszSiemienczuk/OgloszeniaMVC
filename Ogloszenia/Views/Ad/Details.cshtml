@@ -3,7 +3,7 @@
         
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = Html.DisplayFor(model => model.Title);
 }
 
 
@@ -22,11 +22,9 @@ if(result.Length - 2 > 0)
 
 }
 
-<h2>Details</h2>
+<h2>Szczegóły ogłoszenia</h2>
 
 <div>
-    <h4>Ad</h4>
-    <hr />
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.Title)
@@ -34,14 +32,6 @@ if(result.Length - 2 > 0)
 
         <dd>
             @Html.DisplayFor(model => model.Title)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Content)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Content)
         </dd>
 
         <dt>
@@ -68,8 +58,15 @@ if(result.Length - 2 > 0)
             @DisplayCategories(Model.Category)
         </dd>
 
+        <dt>
+            @Html.DisplayNameFor(model => model.Content)
+        </dt>
+
+        <dd>
+            @Html.Raw(Model.Content)
+        </dd>
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Wróć do listy", "Index")
 </p>

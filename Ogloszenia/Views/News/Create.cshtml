@@ -47,5 +47,12 @@
 @section scripts
 {
     <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#ExpirationDate').datepicker({
+                format: "yyyy-mm-dd"
+            });
+        });
+    </script>
     <script>tinymce.init({ selector:'textarea' });</script>
 }

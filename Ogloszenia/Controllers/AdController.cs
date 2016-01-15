@@ -10,6 +10,7 @@ using Ogloszenia.DAL;
 using Ogloszenia.Models;
 using Microsoft.AspNet.Identity;
 using PagedList;
+using System.Text.RegularExpressions;
 
 namespace Ogloszenia.Controllers
 {
@@ -136,6 +137,18 @@ namespace Ogloszenia.Controllers
         [Authorize(Roles = "Admin, User")]
         public ActionResult Create([Bind(Include = "AdID,Title,Content,ExpirationDate")] Ad ad)
         {
+            ad.Category = new List<Category>(); //trzeba zainicjować listę
+            if (Request.Form["Category"] != null && Request.Form["Category"]!="")
+            {
+                string Category = Request.Form["Category"];
+                List<int> categoriesIdList = Category.Split(',').Select(Int32.Parse).ToList();
+                foreach (int cId in categoriesIdList)
+                {
+                    Category c = db.Categories.Find(cId);
+                    ad.Category.Add(c);
+                }
+            }
+
             if (ModelState.IsValid)
             {
                 if (ad.Content.Length > CONTENT_MAXLENGTH)
@@ -152,11 +165,15 @@ namespace Ogloszenia.Controllers
                 {
                     return RedirectToAction("BannedWordInserted");
                 }
+
+
                 db.Ads.Add(ad);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
+            var categories = db.Categories.ToList();
+            ViewData["categoriesSelect"] = new SelectList(categories, "CategoryID", "Name");
             return View(ad);
         }
 
@@ -173,6 +190,8 @@ namespace Ogloszenia.Controllers
             {
                 return HttpNotFound();
             }
+            var categories = db.Categories.ToList();
+            ViewData["categoriesSelect"] = new SelectList(categories, "CategoryID", "Name");
             return View(ad);
         }
 
@@ -257,10 +276,15 @@ namespace Ogloszenia.Controllers
             return RedirectToAction("Index", "Home", null);
         }
 
+        private string Strip(string text)
+        {
+            return Regex.Replace(text, @"<(.|\n)*?>", string.Empty);
+        }
+
         private String createShortContent(String input)
         {
             String result = "";
-            String[] words = input.Split(' ');
+            String[] words = Strip(input).Split(' ');
             int index = 0;
             while (result.Length <= CONTENT_MAXLENGTH)
             {
